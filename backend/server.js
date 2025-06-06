@@ -13,9 +13,21 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 //middleware
+const allowedOrigins = [
+  "http://localhost:5173", // local dev
+  "https://note-three-psi.vercel.app", // production (Vercel frontend)
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // allow credentials if needed in future
   })
 );
 
