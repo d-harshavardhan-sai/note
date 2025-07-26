@@ -1,13 +1,13 @@
 import axios from "axios";
 
-// Base URL points to the combined backend (running on PORT 4000)
-const BASE_URL = import.meta.env.MODE === "development"
-  ? import.meta.env.VITE_BACKEND_URL + "/api" // Use VITE_BACKEND_URL from .env
-  : "https://note-chnx.onrender.com/api";  // UPDATE THIS FOR PRODUCTION DEPLOYMENT
+const BASE_URL =
+  import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_BACKEND_URL + "/api" // Local dev still uses localhost:4000/api
+    : "/api"; // <-- UPDATED FOR PRODUCTION: Points to /api on the same host (Render URL)
 
 const api = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // Crucial for sending cookies (JWT) with requests
+  withCredentials: true,
 });
 
 export default api;
