@@ -1,4 +1,4 @@
-// note/backend/server.js
+// THIS MUST BE THE ABSOLUTE VERY FIRST LINE TO LOAD .ENV VARIABLES
 import 'dotenv/config';
 
 import express from "express";
@@ -22,10 +22,10 @@ const PORT = process.env.PORT || 4000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const publicPath = path.join(__dirname, 'src', 'public'); // For profile pictures
+const publicPath = path.join(__dirname, 'src', 'public'); // For profile pictures (e.g., /opt/render/project/src/backend/src/public)
 const uploadsPath = path.join(publicPath, 'uploads');
-// Path to frontend's build folder, now expected *inside* backend/
-const frontendDistPath = path.join(__dirname, 'dist'); // <-- UPDATED PATH: Serve from backend/dist
+// Path to frontend's build folder (e.g., /opt/render/project/src/backend/dist)
+const frontendDistPath = path.join(__dirname, 'dist');
 
 try {
   if (!fs.existsSync(publicPath)) { fs.mkdirSync(publicPath, { recursive: true }); }
@@ -35,9 +35,9 @@ try {
 }
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://note-three-psi.vercel.app",
-  "https://note-chnx.onrender.com" // Your Render service URL
+  "http://localhost:5173", // Keep for local development
+  "https://note-three-psi.vercel.app", // Your old Vercel frontend (if still using for anything)
+  "https://note-chnx.onrender.com" // Your Render service URL (ADD THIS IF YOU HAVEN'T ALREADY)
 ];
 
 app.use(
@@ -67,17 +67,12 @@ app.use("/api/notes", notesRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
-// --- START DEBUGGING LOGS FOR FRONTEND PATH (Keep for now) ---
-console.log("Calculated frontendDistPath (for serving):", frontendDistPath);
-console.log("Does frontendDistPath exist?", fs.existsSync(frontendDistPath));
-console.log("Does index.html exist at path?", fs.existsSync(path.join(frontendDistPath, 'index.html')));
-// --- END DEBUGGING LOGS FOR FRONTEND PATH ---
-
 // Serve frontend static files
-// This must come AFTER API routes.
+// This must come AFTER API routes, so API requests are handled first.
 app.use(express.static(frontendDistPath));
 
 // Fallback for SPA routing: For any other GET request, send index.html
+// This ensures React Router can handle client-side routing
 app.get('*', (req, res) => {
   const indexPath = path.join(frontendDistPath, 'index.html');
   if (fs.existsSync(indexPath)) {
@@ -97,7 +92,7 @@ app.use((err, req, res, next) => {
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Server started and running at http://localhost:${PORT}`);
-    console.log(`Frontend served from: ${frontendDistPath}`);
+    console.log(`Frontend served from: ${frontendDistPath}`); // This log confirms the path
   });
 }).catch(err => {
     console.error("Failed to connect to database and start server:", err);
