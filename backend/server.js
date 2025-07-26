@@ -1,7 +1,8 @@
 // note/backend/server.js
 import 'dotenv/config';
-import cors from "cors";
+
 import express from "express";
+import cors from "cors";
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -21,9 +22,10 @@ const PORT = process.env.PORT || 4000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const publicPath = path.join(__dirname, 'src', 'public');
+const publicPath = path.join(__dirname, 'src', 'public'); // For profile pictures
 const uploadsPath = path.join(publicPath, 'uploads');
-const frontendDistPath = path.join(__dirname, 'dist'); // This path assumes frontend is copied here
+// Path to frontend's build folder, now expected *inside* backend/
+const frontendDistPath = path.join(__dirname, 'dist'); // <-- UPDATED PATH: Serve from backend/dist
 
 try {
   if (!fs.existsSync(publicPath)) { fs.mkdirSync(publicPath, { recursive: true }); }
@@ -33,9 +35,9 @@ try {
 }
 
 const allowedOrigins = [
-  "http://localhost:5173", // Keep for local development
-  "https://note-three-psi.vercel.app", // Your old Vercel frontend (if still using for anything)
-  "https://note-chnx.onrender.com" // <-- ADD YOUR RENDER SERVICE URL HERE
+  "http://localhost:5173",
+  "https://note-three-psi.vercel.app",
+  "https://note-chnx.onrender.com" // Your Render service URL
 ];
 
 app.use(
@@ -64,6 +66,12 @@ app.get("/api-status", (req, res) => res.send("Server running and API working!")
 app.use("/api/notes", notesRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+
+// --- START DEBUGGING LOGS FOR FRONTEND PATH (Keep for now) ---
+console.log("Calculated frontendDistPath (for serving):", frontendDistPath);
+console.log("Does frontendDistPath exist?", fs.existsSync(frontendDistPath));
+console.log("Does index.html exist at path?", fs.existsSync(path.join(frontendDistPath, 'index.html')));
+// --- END DEBUGGING LOGS FOR FRONTEND PATH ---
 
 // Serve frontend static files
 // This must come AFTER API routes.
