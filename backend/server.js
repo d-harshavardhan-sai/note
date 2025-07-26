@@ -23,20 +23,18 @@ const __dirname = path.dirname(__filename);
 
 const publicPath = path.join(__dirname, 'src', 'public'); // For profile pictures
 const uploadsPath = path.join(publicPath, 'uploads');
-// Path to frontend's build folder, now expected *inside* backend/
-const frontendDistPath = path.join(__dirname, 'dist'); // <-- UPDATED PATH
+// Path to frontend's build folder, now expected *inside* backend/ after copy
+const frontendDistPath = path.join(__dirname, 'dist'); // <-- UPDATED PATH TO BE RELATIVE TO BACKEND ROOT
 
-// Create necessary directories if they don't exist
 try {
   if (!fs.existsSync(publicPath)) { fs.mkdirSync(publicPath, { recursive: true }); }
   if (!fs.existsSync(uploadsPath)) { fs.mkdirSync(uploadsPath, { recursive: true }); }
-  // No need to create frontendDistPath here, Vite will create it
 } catch (err) {
   console.error("Error creating directories:", err);
 }
 
 const allowedOrigins = [
-  "http://localhost:5173", // Keep for local development
+  "http://localhost:5173",
   "https://note-three-psi.vercel.app",
   // !!! IMPORTANT: Add your Render service URL here after deployment !!!
   // Example: "https://your-service-name.onrender.com"
@@ -69,7 +67,7 @@ app.use("/api/notes", notesRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
-// --- START DEBUGGING LOGS FOR FRONTEND PATH ---
+// --- START DEBUGGING LOGS FOR FRONTEND PATH (Keep for now) ---
 console.log("Calculated frontendDistPath (for serving):", frontendDistPath);
 console.log("Does frontendDistPath exist?", fs.existsSync(frontendDistPath));
 console.log("Does index.html exist at path?", fs.existsSync(path.join(frontendDistPath, 'index.html')));
