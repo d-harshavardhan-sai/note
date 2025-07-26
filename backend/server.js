@@ -5,7 +5,7 @@ import express from "express";
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs'; // Ensure fs is imported
+import fs from 'fs';
 
 import notesRoutes from "./src/routes/notesRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
@@ -21,19 +21,22 @@ const PORT = process.env.PORT || 4000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const publicPath = path.join(__dirname, 'src', 'public');
+const publicPath = path.join(__dirname, 'src', 'public'); // For profile pictures
 const uploadsPath = path.join(publicPath, 'uploads');
-const frontendDistPath = path.join(__dirname, '..', 'frontend', 'dist'); // Path to frontend's build folder
+// Path to frontend's build folder, now expected *inside* backend/
+const frontendDistPath = path.join(__dirname, 'dist'); // <-- UPDATED PATH
 
+// Create necessary directories if they don't exist
 try {
   if (!fs.existsSync(publicPath)) { fs.mkdirSync(publicPath, { recursive: true }); }
   if (!fs.existsSync(uploadsPath)) { fs.mkdirSync(uploadsPath, { recursive: true }); }
+  // No need to create frontendDistPath here, Vite will create it
 } catch (err) {
   console.error("Error creating directories:", err);
 }
 
 const allowedOrigins = [
-  "http://localhost:5173",
+  "http://localhost:5173", // Keep for local development
   "https://note-three-psi.vercel.app",
   // !!! IMPORTANT: Add your Render service URL here after deployment !!!
   // Example: "https://your-service-name.onrender.com"
@@ -67,7 +70,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
 // --- START DEBUGGING LOGS FOR FRONTEND PATH ---
-console.log("Calculated frontendDistPath:", frontendDistPath);
+console.log("Calculated frontendDistPath (for serving):", frontendDistPath);
 console.log("Does frontendDistPath exist?", fs.existsSync(frontendDistPath));
 console.log("Does index.html exist at path?", fs.existsSync(path.join(frontendDistPath, 'index.html')));
 // --- END DEBUGGING LOGS FOR FRONTEND PATH ---
@@ -77,7 +80,6 @@ app.use(express.static(frontendDistPath));
 
 // Fallback for SPA routing: For any other GET request, send index.html
 app.get('*', (req, res) => {
-  // Ensure the file exists before sending, or handle error gracefully
   const indexPath = path.join(frontendDistPath, 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
