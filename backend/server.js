@@ -1,14 +1,11 @@
 // note/backend/server.js
-// THIS MUST BE THE ABSOLUTE VERY FIRST LINE IN THE FILE
-import 'dotenv/config'; // <-- ENSURE THIS IS THE FIRST LINE AND ONLY DOTENV IMPORT
-
-import express from "express";
-// import dotenv from "dotenv"; // <-- DELETE THIS LINE
+import 'dotenv/config';
 import cors from "cors";
+import express from "express";
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
+import fs from 'fs'; // Ensure fs is imported
 
 import notesRoutes from "./src/routes/notesRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
@@ -16,8 +13,6 @@ import userRoutes from "./src/routes/userRoutes.js";
 
 import { connectDB } from "./src/config/db.js";
 import rateLimiter from "./src/middleware/rateLimiter.js";
-
-// dotenv.config(); // <-- DELETE THIS LINE (if it exists here)
 
 const app = express();
 
@@ -28,7 +23,7 @@ const __dirname = path.dirname(__filename);
 
 const publicPath = path.join(__dirname, 'src', 'public');
 const uploadsPath = path.join(publicPath, 'uploads');
-const frontendDistPath = path.join(__dirname, '..', 'frontend', 'dist');
+const frontendDistPath = path.join(__dirname, '..', 'frontend', 'dist'); // Path to frontend's build folder
 
 try {
   if (!fs.existsSync(publicPath)) { fs.mkdirSync(publicPath, { recursive: true }); }
@@ -65,15 +60,31 @@ app.use('/public', express.static(publicPath));
 
 app.use(rateLimiter);
 
+// API Routes
 app.get("/api-status", (req, res) => res.send("Server running and API working!"));
 app.use("/api/notes", notesRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
+// --- START DEBUGGING LOGS FOR FRONTEND PATH ---
+console.log("Calculated frontendDistPath:", frontendDistPath);
+console.log("Does frontendDistPath exist?", fs.existsSync(frontendDistPath));
+console.log("Does index.html exist at path?", fs.existsSync(path.join(frontendDistPath, 'index.html')));
+// --- END DEBUGGING LOGS FOR FRONTEND PATH ---
+
+// Serve frontend static files
 app.use(express.static(frontendDistPath));
 
+// Fallback for SPA routing: For any other GET request, send index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(frontendDistPath, 'index.html'));
+  // Ensure the file exists before sending, or handle error gracefully
+  const indexPath = path.join(frontendDistPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    console.error(`Error: index.html not found at ${indexPath}`);
+    res.status(404).send('Frontend index.html not found.');
+  }
 });
 
 
@@ -85,7 +96,7 @@ app.use((err, req, res, next) => {
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Server started and running at http://localhost:${PORT}`);
-    console.log(`Frontend served from: ${frontendDistPath}`);
+    console.log(`Frontend served from: ${frontendDistPath}`); // This log remains
   });
 }).catch(err => {
     console.error("Failed to connect to database and start server:", err);
