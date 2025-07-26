@@ -1,22 +1,45 @@
 import { PenSquareIcon, Trash2Icon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom"; // Changed from react-router to react-router-dom
 import { formatDate } from "../lib/utils";
 import api from "../lib/axios";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify"; // Changed from react-hot-toast to react-toastify
+import { useContext } from "react";
+import { AppContent } from "../context/AppContext"; // To get userId for ownership check
 
 const NoteCard = ({ note, setNotes }) => {
+  const navigate = useNavigate();
+  const { userData } = useContext(AppContent);
+
   const handleDelete = async (e, id) => {
-    e.preventDefault(); // get rid of the navigation behaviour
+    e.preventDefault(); // get rid of the navigation behaviour from the parent Link
+
+    if (!userData || !userData._id) {
+      toast.error("You must be logged in to delete notes.");
+      navigate("/login");
+      return;
+    }
+
+    if (note.owner !== userData._id) {
+      toast.error("You can only delete your own notes.");
+      return;
+    }
 
     if (!window.confirm("Are you sure you want to delete this note?")) return;
 
     try {
       await api.delete(`/notes/${id}`);
-      setNotes((prev) => prev.filter((note) => note._id !== id)); // get rid of the deleted one
+      setNotes((prev) => prev.filter((note) => note._id !== id));
       toast.success("Note deleted successfully");
     } catch (error) {
-      console.log("Error in handleDelete", error);
-      toast.error("Failed to delete note");
+      console.error("Error in handleDelete", error);
+      if (error.response?.status === 403) {
+        toast.error("Forbidden: You can only delete your own notes.");
+      } else if (error.response?.status === 401) {
+        toast.error("Unauthorized: Please log in.");
+        navigate("/login");
+      } else {
+        toast.error("Failed to delete note");
+      }
     }
   };
 
@@ -34,13 +57,19 @@ const NoteCard = ({ note, setNotes }) => {
             {formatDate(new Date(note.createdAt))}
           </span>
           <div className="flex items-center gap-1">
-            <PenSquareIcon className="size-4" />
-            <button
-              className="btn btn-ghost btn-xs text-error"
-              onClick={(e) => handleDelete(e, note._id)}
-            >
-              <Trash2Icon className="size-4" />
-            </button>
+            {/* Removed the <Link> here as the whole card is already a link */}
+            {/* Added text-primary to ensure icon color is themed */}
+            <PenSquareIcon className="size-4 text-primary cursor-pointer" /> 
+            
+            {/* Show delete button only if logged in and it's their note */}
+            {userData && note.owner === userData._id && (
+              <button
+                className="btn btn-ghost btn-xs text-error"
+                onClick={(e) => handleDelete(e, note._id)}
+              >
+                <Trash2Icon className="size-4" />
+              </button>
+            )}
           </div>
         </div>
       </div>

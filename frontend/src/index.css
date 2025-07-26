@@ -1,3 +1,637 @@
+/* Import all fonts */
+@import url('https://fonts.googleapis.com/css2?family=Londrina+Sketch&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;0,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+Australia+QLD:wght@100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Inline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mystery+Quest&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas', cursive);
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand', cursive);
+@import url('https://fonts.googleapis.com/css2?family=Rye', 'cursive');
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt', 'cursive');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Default/Light Theme Variables */
+:root {
+  --bg-color: #f0f5ff; /* Main background for content areas */
+  --text-color: #333; /* Main text color */
+  --primary-color: #8B5CF6; /* Purple (e.g., headings, links, accents) */
+  --secondary-color: #EC4899; /* Pink (e.g., secondary accents, buttons) */
+  --accent-color: #06B6D4; /* Cyan (e.g., highlights, active states) */
+  --border-color: #d1d5db; /* Gray borders */
+  --link-color: #8B5CF6; /* Default link color */
+  --button-bg-gradient-from: #EC4899; /* Button gradient start */
+  --button-bg-gradient-via: #8B5CF6; /* Button gradient middle */
+  --button-bg-gradient-to: #06B6D4; /* Button gradient end */
+  --form-input-bg: #ffffff; /* Form input background */
+  --form-input-text: #333; /* Form input text (dark text for light bg inputs) */
+  --font-family: "Poppins", sans-serif; /* Default font */
+
+  /* New semantic variables for elements that need specific colors */
+  --card-bg: #ffffff; /* Background for cards/panels */
+  --input-border: #d1d5db; /* General input border color */
+  --input-focus-ring: #8B5CF6; /* Focus ring color */
+  --text-muted: #6b7280; /* Muted text color for descriptions */
+  --button-hover-bg: #ffe0b2; /* Example hover background for some buttons */
+  --list-item-hover-bg: #e6e6fa; /* Light Lavender - more distinct hover */
+
+  /* Danger Zone Colors */
+  --danger-bg: #fee2e2;
+  --danger-text: #b91c1c;
+  --danger-border: #ef4444;
+  --danger-button-bg: #dc2626;
+  --danger-button-hover-bg: #b91c1c;
+
+  /* Input Placeholder Color - Darker for light themes, lighter for dark themes */
+  --input-placeholder-color: #888888; /* A visible medium gray for light inputs */
+
+  /* App-wide background gradient */
+  --app-bg-gradient: linear-gradient(to right, #e0f2f7, #e8d0f2, #f9e3f7);
+
+  /* DaisyUI Theme Mapping - these ensure DaisyUI components use our custom theme colors */
+  --p: var(--primary-color);
+  --pf: var(--primary-color);
+  --pc: var(--primary-color);
+  --s: var(--secondary-color);
+  --sf: var(--secondary-color);
+  --sc: var(--secondary-color);
+  --a: var(--accent-color);
+  --af: var(--accent-color);
+  --ac: var(--accent-color);
+  --n: var(--bg-color); /* Neutral maps to our general background */
+  --nf: var(--text-color);
+  --nc: var(--text-color);
+  --b1: var(--card-bg); /* Base-100 maps to our card background */
+  --b2: var(--bg-color); /* Base-200 maps to our general background */
+  --b3: var(--bg-color); /* Base-300 maps to our general background */
+  --bc: var(--text-color); /* Base-content maps to our general text */
+  --in: var(--input-border);
+  --inc: var(--text-color);
+  --su: var(--primary-color);
+  --suc: var(--text-color);
+  --wa: var(--accent-color);
+  --wac: var(--text-color);
+  --er: var(--danger-button-bg);
+  --erc: var(--card-bg);
+}
+
+/* Dark Theme */
+.dark {
+  --bg-color: #1a202c;
+  --text-color: #e2e8f0;
+  --primary-color: #a78bfa;
+  --secondary-color: #f472b6;
+  --accent-color: #22d3ee;
+  --border-color: #4a5568;
+  --link-color: #a78bfa;
+  --button-bg-gradient-from: #f472b6;
+  --button-bg-gradient-via: #a78bfa;
+  --button-bg-gradient-to: #22d3ee;
+  --form-input-bg: #2d3748; /* Dark for dark theme inputs */
+  --form-input-text: #e2e8f0; /* Light text for dark inputs */
+
+  --card-bg: #2d3748;
+  --input-border: #4a5568;
+  --input-focus-ring: #a78bfa;
+  --text-muted: #a0aec0;
+  --button-hover-bg: #3f3050;
+  --list-item-hover-bg: #4f46e5;
+
+  --danger-bg: #450a0a;
+  --danger-text: #fca5a5;
+  --danger-border: #ef4444;
+  --danger-button-bg: #dc2626;
+  --danger-button-hover-bg: #b91c1c;
+
+  --input-placeholder-color: #b0b0b0; /* Lighter gray for dark inputs */
+
+  --app-bg-gradient: linear-gradient(to right, #2c003e, #1a0026, #0d001a);
+
+  /* DaisyUI Theme Mapping for Dark */
+  --p: var(--primary-color);
+  --pf: var(--primary-color);
+  --pc: var(--primary-color);
+  --s: var(--secondary-color);
+  --sf: var(--secondary-color);
+  --sc: var(--secondary-color);
+  --a: var(--accent-color);
+  --af: var(--accent-color);
+  --ac: var(--accent-color);
+  --n: var(--bg-color);
+  --nf: var(--text-color);
+  --nc: var(--text-color);
+  --b1: var(--card-bg);
+  --b2: var(--bg-color);
+  --b3: var(--bg-color);
+  --bc: var(--text-color);
+  --in: var(--input-border);
+  --inc: var(--text-color);
+  --su: var(--primary-color);
+  --suc: var(--text-color);
+  --wa: var(--accent-color);
+  --wac: var(--text-color);
+  --er: var(--danger-button-bg);
+  --erc: var(--card-bg);
+}
+
+/* Corporate Theme */
+.corporate {
+  --bg-color: #f7fafc;
+  --text-color: #2d3748;
+  --primary-color: #3182ce;
+  --secondary-color: #38b2ac;
+  --accent-color: #ecc94b;
+  --border-color: #a0aec0;
+  --link-color: #3182ce;
+  --button-bg-gradient-from: #38b2ac;
+  --button-bg-gradient-via: #3182ce;
+  --button-bg-gradient-to: #ecc94b;
+  --form-input-bg: #ffffff; /* White for light inputs */
+  --form-input-text: #2d3748;
+
+  --card-bg: #ffffff;
+  --input-border: #a0aec0;
+  --input-focus-ring: #3182ce;
+  --text-muted: #718096;
+  --button-hover-bg: #d4eaf7;
+  --list-item-hover-bg: #e0f2f7;
+
+  --danger-bg: #fefcbf;
+  --danger-text: #92400e;
+  --danger-border: #f59e0b;
+  --danger-button-bg: #f59e0b;
+  --danger-button-hover-bg: #d97706;
+
+  --input-placeholder-color: #6b7280; /* A darker gray for contrast on light inputs */
+
+  --app-bg-gradient: linear-gradient(to right, #d4eaf7, #d4f7e0, #f7d4e4);
+
+  /* DaisyUI Theme Mapping for Corporate */
+  --p: var(--primary-color);
+  --pf: var(--primary-color);
+  --pc: var(--primary-color);
+  --s: var(--secondary-color);
+  --sf: var(--secondary-color);
+  --sc: var(--secondary-color);
+  --a: var(--accent-color);
+  --af: var(--accent-color);
+  --ac: var(--accent-color);
+  --n: var(--bg-color);
+  --nf: var(--text-color);
+  --nc: var(--text-color);
+  --b1: var(--card-bg);
+  --b2: var(--bg-color);
+  --b3: var(--bg-color);
+  --bc: var(--text-color);
+  --in: var(--input-border);
+  --inc: var(--text-color);
+  --su: var(--primary-color);
+  --suc: var(--text-color);
+  --wa: var(--accent-color);
+  --wac: var(--text-color);
+  --er: var(--danger-button-bg);
+  --erc: var(--card-bg);
+}
+
+/* Cyberpunk Theme */
+.cyberpunk {
+  --bg-color: #1a0033;
+  --text-color: #00ffff;
+  --primary-color: #ff00ff;
+  --secondary-color: #00ff00;
+  --accent-color: #ffff00;
+  --border-color: #00aaff;
+  --link-color: #ff00ff;
+  --button-bg-gradient-from: #00ff00;
+  --button-bg-gradient-via: #ff00ff;
+  --button-bg-gradient-to: #00ffff;
+  --form-input-bg: #2d0059;
+  --form-input-text: #00ffff;
+
+  --card-bg: #2d0059;
+  --input-border: #00aaff;
+  --input-focus-ring: #ff00ff;
+  --text-muted: #8a2be2;
+  --button-hover-bg: #4a008c;
+  --list-item-hover-bg: #4b0082;
+
+  --danger-bg: #630000;
+  --danger-text: #ff6666;
+  --danger-border: #ff3333;
+  --danger-button-bg: #ff0000;
+  --danger-button-hover-bg: #cc0000;
+
+  --input-placeholder-color: #cccccc; /* Lighter gray for dark inputs */
+
+  --app-bg-gradient: linear-gradient(to bottom right, #0d0d0d, #1a0033, #0d0d0d);
+
+  /* DaisyUI Theme Mapping for Cyberpunk */
+  --p: var(--primary-color);
+  --pf: var(--primary-color);
+  --pc: var(--primary-color);
+  --s: var(--secondary-color);
+  --sf: var(--secondary-color);
+  --sc: var(--secondary-color);
+  --a: var(--accent-color);
+  --af: var(--accent-color);
+  --ac: var(--accent-color);
+  --n: var(--bg-color);
+  --nf: var(--text-color);
+  --nc: var(--text-color);
+  --b1: var(--card-bg);
+  --b2: var(--bg-color);
+  --b3: var(--bg-color);
+  --bc: var(--text-color);
+  --in: var(--input-border);
+  --inc: var(--text-color);
+  --su: var(--primary-color);
+  --suc: var(--text-color);
+  --wa: var(--accent-color);
+  --wac: var(--text-color);
+  --er: var(--danger-button-bg);
+  --erc: var(--card-bg);
+}
+
+/* Nature Theme */
+.nature {
+  --bg-color: #f8f8f4;
+  --text-color: #4a4a4a;
+  --primary-color: #228b22;
+  --secondary-color: #b8860b;
+  --accent-color: #8b4513;
+  --border-color: #9acd32;
+  --link-color: #228b22;
+  --button-bg-gradient-from: #b8860b;
+  --button-bg-gradient-via: #228b22;
+  --button-bg-gradient-to: #8b4513;
+  --form-input-bg: #ffffff; /* White for light inputs */
+  --form-input-text: #4a4a4a;
+
+  --card-bg: #ffffff;
+  --input-border: #9acd32;
+  --input-focus-ring: #228b22;
+  --text-muted: #6b8e23;
+  --button-hover-bg: #b0d8b0;
+  --list-item-hover-bg: #d0f0c0;
+
+  --danger-bg: #dcfce7;
+  --danger-text: #166534;
+  --danger-border: #22c55e;
+  --danger-button-bg: #16a34a;
+  --danger-button-hover-bg: #15803d;
+
+  --input-placeholder-color: #888888; /* Darker gray for contrast on light inputs */
+
+  --app-bg-gradient: linear-gradient(to bottom, #a2c7a2, #c8e0c8, #e0f2e0);
+
+  /* DaisyUI Theme Mapping for Nature */
+  --p: var(--primary-color);
+  --pf: var(--primary-color);
+  --pc: var(--primary-color);
+  --s: var(--secondary-color);
+  --sf: var(--secondary-color);
+  --sc: var(--secondary-color);
+  --a: var(--accent-color);
+  --af: var(--accent-color);
+  --ac: var(--accent-color);
+  --n: var(--bg-color);
+  --nf: var(--text-color);
+  --nc: var(--text-color);
+  --b1: var(--card-bg);
+  --b2: var(--bg-color);
+  --b3: var(--bg-color);
+  --bc: var(--text-color);
+  --in: var(--input-border);
+  --inc: var(--text-color);
+  --su: var(--primary-color);
+  --suc: var(--text-color);
+  --wa: var(--accent-color);
+  --wac: var(--text-color);
+  --er: var(--danger-button-bg);
+  --erc: var(--card-bg);
+}
+
+/* Retro/Vaporwave Theme */
+.retro {
+  --bg-color: #1a0a2e;
+  --text-color: #e0f0ff;
+  --primary-color: #ff007f;
+  --secondary-color: #00c0ff;
+  --accent-color: #ffd700;
+  --border-color: #8a2be2;
+  --link-color: #00c0ff;
+  --button-bg-gradient-from: #ff007f;
+  --button-bg-gradient-via: #8a2be2;
+  --button-bg-gradient-to: #00c0ff;
+  --form-input-bg: #2a1a4e;
+  --form-input-text: #e0f0ff;
+
+  --card-bg: #2a1a4e;
+  --input-border: #8a2be2;
+  --input-focus-ring: #00c0ff;
+  --text-muted: #b0a0e0;
+  --button-hover-bg: #3f2a6e;
+  --list-item-hover-bg: #3c0b5e;
+
+  --danger-bg: #800040;
+  --danger-text: #ffc0d9;
+  --danger-border: #ff007f;
+  --danger-button-bg: #d4006a;
+  --danger-button-hover-bg: #a10051;
+
+  --input-placeholder-color: #cccccc; /* Lighter gray for dark inputs */
+
+  --app-bg-gradient: linear-gradient(135deg, #0d0d0d, #4a0050, #001f3f);
+
+  /* DaisyUI Theme Mapping for Retro */
+  --p: var(--primary-color);
+  --pf: var(--primary-color);
+  --pc: var(--primary-color);
+  --s: var(--secondary-color);
+  --sf: var(--secondary-color);
+  --sc: var(--secondary-color);
+  --a: var(--accent-color);
+  --af: var(--accent-color);
+  --ac: var(--accent-color);
+  --n: var(--bg-color);
+  --nf: var(--text-color);
+  --nc: var(--text-color);
+  --b1: var(--card-bg);
+  --b2: var(--bg-color);
+  --b3: var(--bg-color);
+  --bc: var(--text-color);
+  --in: var(--input-border);
+  --inc: var(--text-color);
+  --su: var(--primary-color);
+  --suc: var(--text-color);
+  --wa: var(--accent-color);
+  --wac: var(--text-color);
+  --er: var(--danger-button-bg);
+  --erc: var(--card-bg);
+}
+
+/* Monochromatic Theme (with a subtle blue tint) */
+.mono {
+  --bg-color: #f7f7f7;
+  --text-color: #2c2c2c;
+  --primary-color: #4a4a4a;
+  --secondary-color: #7a7a7a;
+  --accent-color: #a0a0a0;
+  --border-color: #c0c0c0;
+  --link-color: #66b3ff;
+  --button-bg-gradient-from: #66b3ff;
+  --button-bg-gradient-via: #4a4a4a;
+  --button-bg-gradient-to: #2c2c2c;
+  --form-input-bg: #ffffff;
+  --form-input-text: #2c2c2c;
+
+  --card-bg: #ffffff;
+  --input-border: #c0c0c0;
+  --input-focus-ring: #66b3ff;
+  --text-muted: #888888;
+  --button-hover-bg: #e0e0e0;
+  --list-item-hover-bg: #f0f0f0;
+
+  --danger-bg: #f5f5f5;
+  --danger-text: #993333;
+  --danger-border: #cc6666;
+  --danger-button-bg: #cc3333;
+  --danger-button-hover-bg: #a00000;
+
+  --input-placeholder-color: #888888; /* Darker gray for contrast on light inputs */
+
+  --app-bg-gradient: linear-gradient(to bottom right, #e0e0e0, #f0f0f0);
+}
+
+/* Warm/Sunset Theme */
+.warm {
+  --bg-color: #fffaf0;
+  --text-color: #5a2e00;
+  --primary-color: #ff4500;
+  --secondary-color: #ffa500;
+  --accent-color: #ffd700;
+  --border-color: #d2b48c;
+  --link-color: #ff6347;
+  --button-bg-gradient-from: #ff4500;
+  --button-bg-gradient-via: #ffa500;
+  --button-bg-gradient-to: #ffd700;
+  --form-input-bg: #fff0d9;
+  --form-input-text: #5a2e00;
+
+  --card-bg: #ffffff;
+  --input-border: #d2b48c;
+  --input-focus-ring: #ff4500;
+  --text-muted: #a0522d;
+  --button-hover-bg: #ffe0b2;
+  --list-item-hover-bg: #ffead0;
+
+  --danger-bg: #ffeded;
+  --danger-text: #8b0000;
+  --danger-border: #dc2626;
+  --danger-button-bg: #dc2626;
+  --danger-button-hover-bg: #b91c1c;
+
+  --input-placeholder-color: #888888;
+
+  --app-bg-gradient: linear-gradient(to top, #ffe0b2, #ffcc80, #ffb74d);
+}
+
+/* Cool/Ocean Theme */
+.cool {
+  --bg-color: #e0f2f7;
+  --text-color: #003366;
+  --primary-color: #007bff;
+  --secondary-color: #17a2b8;
+  --accent-color: #00bcd4;
+  --border-color: #a7d9f2;
+  --link-color: #007bff;
+  --button-bg-gradient-from: #17a2b8;
+  --button-bg-gradient-via: #007bff;
+  --button-bg-gradient-to: #00bcd4;
+  --form-input-bg: #f0f8ff;
+  --form-input-text: #003366;
+
+  --card-bg: #ffffff;
+  --input-border: #a7d9f2;
+  --input-focus-ring: #007bff;
+  --text-muted: #6a8dad;
+  --button-hover-bg: #dbe9ee;
+  --list-item-hover-bg: #b0e0e6;
+
+  --danger-bg: #ffebeb;
+  --danger-text: #cc0000;
+  --danger-border: #ff3333;
+  --danger-button-bg: #ff0000;
+  --danger-button-hover-bg: #cc0000;
+
+  --input-placeholder-color: #888888;
+
+  --app-bg-gradient: linear-gradient(to bottom left, #add8e6, #87ceeb, #6495ed);
+}
+
+/* High-Contrast/Bold Theme */
+.high-contrast {
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --primary-color: #00ff00;
+  --secondary-color: #ff00ff;
+  --accent-color: #ffff00;
+  --border-color: #888888;
+  --link-color: #00ffff;
+  --button-bg-gradient-from: #00ff00;
+  --button-bg-gradient-via: #ff00ff;
+  --button-bg-gradient-to: #ffff00;
+  --form-input-bg: #333333;
+  --form-input-text: #00ff00;
+
+  --card-bg: #1a1a1a;
+  --input-border: #555555;
+  --input-focus-ring: #00ffff;
+  --text-muted: #aaaaaa;
+  --button-hover-bg: #444444;
+  --list-item-hover-bg: #2a2a2a;
+
+  --danger-bg: #550000;
+  --danger-text: #ff3333;
+  --danger-border: #ff0000;
+  --danger-button-bg: #cc0000;
+  --danger-button-hover-bg: #800000;
+
+  --input-placeholder-color: #cccccc;
+
+  --app-bg-gradient: linear-gradient(to right, #111111, #000000);
+}
+
+
+/* Apply global font and colors */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--primary-font);
+  background-image: var(--app-bg-gradient);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: var(--text-color);
+  transition: background-image 0.5s ease, color 0.3s ease;
+}
+
+/* Global placeholder styling */
+input::placeholder, textarea::placeholder {
+    color: var(--input-placeholder-color);
+    opacity: 1;
+}
+
+/* Base styles for other elements to use variables */
+/* Using !important to ensure custom variables override Tailwind's defaults */
+h1, h2, h3, h4, h5, h6 { color: var(--primary-color) !important; }
+p { color: var(--text-color) !important; }
+a { color: var(--link-color) !important; }
+
+/* Tailwind overrides mapped to CSS variables */
+.text-primary-color { color: var(--primary-color) !important; }
+.text-secondary-color { color: var(--secondary-color) !important; }
+.text-accent-color { color: var(--accent-color) !important; }
+.text-form-input-text { color: var(--form-input-text) !important; }
+.text-general { color: var(--text-color) !important; }
+.text-muted { color: var(--text-muted) !important; }
+.text-link { color: var(--link-color) !important; }
+
+.bg-card { background-color: var(--card-bg) !important; }
+.bg-form-input { background-color: var(--form-input-bg) !important; }
+.bg-general { background-color: var(--bg-color) !important; }
+
+.border-general { border-color: var(--border-color) !important; }
+.input-border { border-color: var(--input-border) !important; }
+.input-focus-ring:focus { --tw-ring-color: var(--input-focus-ring) !important; border-color: var(--input-focus-ring) !important; }
+
+.danger-bg { background-color: var(--danger-bg) !important; }
+.danger-text { color: var(--danger-text) !important; }
+.danger-border { border-color: var(--danger-border) !important; }
+.danger-button-bg { background-color: var(--danger-button-bg) !important; }
+.danger-button-hover-bg:hover { background-color: var(--danger-button-hover-bg) !important; }
+
+/* Overriding specific standard Tailwind classes */
+.text-gray-800 { color: var(--text-color) !important; }
+.text-gray-700 { color: var(--text-muted) !important; }
+.text-gray-600 { color: var(--text-muted) !important; }
+.text-gray-300 { color: var(--text-muted) !important; }
+.text-gray-400 { color: var(--text-muted) !important; }
+
+.bg-white { background-color: var(--card-bg) !important; }
+.bg-gray-200 { background-color: var(--input-border) !important; }
+
+.border-gray-500 { border-color: var(--border-color) !important; }
+.border-gray-300 { border-color: var(--input-border) !important; }
+
+.text-violet-400 { color: var(--form-input-text) !important; }
+.text-purple-100 { color: var(--text-color) !important; }
+.text-red-500 { color: var(--danger-text) !important; }
+.text-red-300 { color: var(--danger-text) !important; }
+.text-red-700 { color: var(--danger-text) !important; }
+.bg-red-100 { background-color: var(--danger-bg) !important; }
+.border-red-300 { border-color: var(--danger-border) !important; }
+.bg-red-600 { background-color: var(--danger-button-bg) !important; }
+.hover\:bg-red-700:hover { background-color: var(--danger-button-hover-bg) !important; }
+
+/* List item hover effects (using !important for stronger override) */
+.hover\:bg-cyan-100:hover { background-color: var(--list-item-hover-bg) !important; }
+.hover\:bg-pink-100:hover { background-color: var(--list-item-hover-bg) !important; }
+.hover\:bg-violet-100:hover { background-color: var(--list-item-hover-bg) !important; }
+.hover\:bg-amber-100:hover { background-color: var(--button-hover-bg) !important; }
+
+
+/* Font classes for demonstration in settings menu */
+.font-poppins { font-family: "Poppins", sans-serif; }
+.font-ubuntu { font-family: "Ubuntu", sans-serif; }
+.font-londrina { font-family: "Londrina Sketch", cursive; }
+.font-pixelify { font-family: "Pixelify Sans", cursive; }
+.font-comfortaa { font-family: "Comfortaa", sans-serif; }
+.font-playwrite { font-family: "Playwrite Australia QLD", cursive; }
+.font-creepster { font-family: "Creepster", cursive; }
+.font-indie { font-family: "Indie Flower", cursive; }
+.font-finger { font-family: "Finger Paint", cursive; }
+.font-bungee { font-family: "Bungee Inline", cursive; }
+.font-marker { font-family: "Permanent Marker", cursive; }
+.font-mystery { font-family: "Mystery Quest", cursive; }
+.font-mountains { font-family: "Mountains of Christmas", cursive; }
+.font-patrick { font-family: "Patrick Hand", cursive; }
+.font-rye { font-family: "Rye", cursive; }
+.font-rocksalt { font-family: "Rock Salt", cursive; }
+
+/* Keyframe for floating effect */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Base styles for the profile image in the header */
+.header-profile-img {
+  animation: float 3s ease-in-out infinite;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-out, box-shadow 0.3s ease-out;
+  perspective: 1000px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* 3D Hover Effect */
+.header-profile-img:hover {
+  animation-play-state: paused;
+  transform: rotateY(15deg) scale(1.05);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}

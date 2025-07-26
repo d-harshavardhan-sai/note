@@ -8,6 +8,11 @@ const noteSchema = new mongoose.Schema({
     content: {
         type: String,
         required: true
+    },
+    owner: { // <-- NEW FIELD
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user', // Reference the User model from the Auth project
+        required: true
     }
 }, {timestamps: true});
 
