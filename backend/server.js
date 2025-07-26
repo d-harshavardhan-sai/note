@@ -21,10 +21,9 @@ const PORT = process.env.PORT || 4000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const publicPath = path.join(__dirname, 'src', 'public'); // For profile pictures
+const publicPath = path.join(__dirname, 'src', 'public');
 const uploadsPath = path.join(publicPath, 'uploads');
-// Path to frontend's build folder, now expected *inside* backend/ after copy
-const frontendDistPath = path.join(__dirname, 'dist'); // <-- UPDATED PATH TO BE RELATIVE TO BACKEND ROOT
+const frontendDistPath = path.join(__dirname, 'dist'); // This path assumes frontend is copied here
 
 try {
   if (!fs.existsSync(publicPath)) { fs.mkdirSync(publicPath, { recursive: true }); }
@@ -34,10 +33,9 @@ try {
 }
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://note-three-psi.vercel.app",
-  // !!! IMPORTANT: Add your Render service URL here after deployment !!!
-  // Example: "https://your-service-name.onrender.com"
+  "http://localhost:5173", // Keep for local development
+  "https://note-three-psi.vercel.app", // Your old Vercel frontend (if still using for anything)
+  "https://note-chnx.onrender.com" // <-- ADD YOUR RENDER SERVICE URL HERE
 ];
 
 app.use(
@@ -67,13 +65,8 @@ app.use("/api/notes", notesRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
-// --- START DEBUGGING LOGS FOR FRONTEND PATH (Keep for now) ---
-console.log("Calculated frontendDistPath (for serving):", frontendDistPath);
-console.log("Does frontendDistPath exist?", fs.existsSync(frontendDistPath));
-console.log("Does index.html exist at path?", fs.existsSync(path.join(frontendDistPath, 'index.html')));
-// --- END DEBUGGING LOGS FOR FRONTEND PATH ---
-
 // Serve frontend static files
+// This must come AFTER API routes.
 app.use(express.static(frontendDistPath));
 
 // Fallback for SPA routing: For any other GET request, send index.html
@@ -96,7 +89,7 @@ app.use((err, req, res, next) => {
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Server started and running at http://localhost:${PORT}`);
-    console.log(`Frontend served from: ${frontendDistPath}`); // This log remains
+    console.log(`Frontend served from: ${frontendDistPath}`);
   });
 }).catch(err => {
     console.error("Failed to connect to database and start server:", err);
