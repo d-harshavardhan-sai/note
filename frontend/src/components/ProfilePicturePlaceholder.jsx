@@ -24,7 +24,7 @@ const ProfilePicturePlaceholder = () => {
       <h3 className="text-2xl font-bold text-[var(--primary-color)]">
         You don't have any notes yet!
       </h3>
-      <p className="text-[var(--text-color)] text-base-content/70">
+      <p className="text-[var(--text-color)]">
         Ready to organize your thoughts? Create your first note to get started on your journey.
       </p>
       <Link to="/create" className="btn-base"> {/* Using btn-base for themed button x */}
