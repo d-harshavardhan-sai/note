@@ -34,8 +34,10 @@ try {
 // Allowed origins for CORS: Must include your Vercel frontend URL(s)
 const allowedOrigins = [
   "http://localhost:5173", // For local frontend development
-  "https://note-alpha-lilac.vercel.app" // Your Vercel frontend URL from the logs
-  // Add any other specific frontend URLs that need to access this backend (e.g., custom domains)
+  "https://note-three-psi.vercel.app", // Your previous Vercel frontend URL (if still active)
+  "https://note-e3erkdnau-divvala-harshavardhan-sais-projects.vercel.app", // Your Vercel frontend URL from previous logs
+  "https://note-chnx.onrender.com", // Your Render service URL
+  "https://note-alpha-lilac.vercel.app"
 ];
 
 app.use(
