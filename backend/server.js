@@ -1,12 +1,10 @@
-// note/backend/server.js
 import 'dotenv/config';
 
 import express from "express";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import { fileURLToPath } from 'url'; // Corrected syntax if missing
-
+import { fileURLToPath } from 'url';
 import fs from 'fs'; // Ensure fs is imported
 
 import notesRoutes from "./src/routes/notesRoutes.js";
@@ -23,10 +21,8 @@ const PORT = process.env.PORT || 4000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const publicPath = path.join(__dirname, 'src', 'public');
+const publicPath = path.join(__dirname, 'src', 'public'); // For profile pictures
 const uploadsPath = path.join(publicPath, 'uploads');
-// Path to frontend's build folder, now expected *inside* backend/
-const frontendDistPath = path.join(__dirname, 'dist'); // <-- THIS PATH IS CORRECT FOR SERVER.JS
 
 try {
   if (!fs.existsSync(publicPath)) { fs.mkdirSync(publicPath, { recursive: true }); }
@@ -35,10 +31,12 @@ try {
   console.error("Error creating directories:", err);
 }
 
+// Allowed origins for CORS: Must include your Vercel frontend URL(s)
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://note-three-psi.vercel.app",
-  "https://note-chnx.onrender.com"
+  "http://localhost:5173", // For local frontend development
+  "https://note-three-psi.vercel.app", // Your previous Vercel frontend URL (if still active)
+  "https://note-e3erkdnau-divvala-harshavardhan-sais-projects.vercel.app", // Your Vercel frontend URL from the logs
+  // Add any other specific frontend URLs that need to access this backend (e.g., custom domains)
 ];
 
 app.use(
@@ -50,7 +48,7 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true,
+    credentials: true, // Allow cookies to be sent cross-origin
   })
 );
 
@@ -58,36 +56,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Serve profile pictures statically (will be accessed by frontend at /public/uploads)
 app.use('/public', express.static(publicPath));
 
 app.use(rateLimiter);
 
-// API Routes
+// API Routes (ONLY API routes are served by this backend now)
 app.get("/api-status", (req, res) => res.send("Server running and API working!"));
 app.use("/api/notes", notesRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
-// --- START DEBUGGING LOGS FOR FRONTEND PATH (KEEP THESE!) ---
-console.log("Calculated frontendDistPath (for serving):", frontendDistPath);
-console.log("Does frontendDistPath exist?", fs.existsSync(frontendDistPath));
-console.log("Does index.html exist at path?", fs.existsSync(path.join(frontendDistPath, 'index.html')));
-// --- END DEBUGGING LOGS FOR FRONTEND PATH ---
-
-// Serve frontend static files
-app.use(express.static(frontendDistPath));
-
-// Fallback for SPA routing: For any other GET request, send index.html
-app.get('*', (req, res) => {
-  const indexPath = path.join(frontendDistPath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    console.error(`Error: index.html not found at ${indexPath}`);
-    res.status(404).send('Frontend index.html not found.');
-  }
-});
-
+// *** IMPORTANT: REMOVE ALL FRONTEND SERVING LOGIC FROM HERE ***
+// app.use(express.static(frontendDistPath)); // DELETE this line if it's uncommented
+// app.get('*', ...) // DELETE this entire block if it's uncommented
 
 app.use((err, req, res, next) => {
   console.error("Global Error Handler:", err.stack);
@@ -97,7 +79,7 @@ app.use((err, req, res, next) => {
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Server started and running at http://localhost:${PORT}`);
-    console.log(`Frontend served from: ${frontendDistPath}`);
+    // console.log(`Frontend served from: ${frontendDistPath}`); // DELETE this log
   });
 }).catch(err => {
     console.error("Failed to connect to database and start server:", err);
