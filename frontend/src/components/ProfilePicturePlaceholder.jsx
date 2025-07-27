@@ -27,7 +27,7 @@ const ProfilePicturePlaceholder = () => {
       <p className="text-[var(--text-color)] text-base-content/70">
         Ready to organize your thoughts? Create your first note to get started on your journey.
       </p>
-      <Link to="/create" className="btn-base"> {/* Using btn-base for themed button */}
+      <Link to="/create" className="btn-base"> {/* Using btn-base for themed button x */}
         Create Your First Note
       </Link>
     </div>
