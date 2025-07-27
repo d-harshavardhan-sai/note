@@ -5,12 +5,13 @@ import express from "express";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
+import { fileURLToPath } from 'url'; // Corrected syntax if missing
+
+import fs from 'fs'; // Ensure fs is imported
 
 import notesRoutes from "./src/routes/notesRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
-import userRoutes from "./src/routes/userRoutes.js";
+import userRoutes from "./src/routes/userRoutes.js"; // Ensure correct path for userRoutes
 
 import { connectDB } from "./src/config/db.js";
 import rateLimiter from "./src/middleware/rateLimiter.js";
@@ -25,7 +26,7 @@ const __dirname = path.dirname(__filename);
 const publicPath = path.join(__dirname, 'src', 'public');
 const uploadsPath = path.join(publicPath, 'uploads');
 // Path to frontend's build folder, now expected *inside* backend/
-const frontendDistPath = path.join(__dirname, 'dist'); // This is the correct relative path from server.js
+const frontendDistPath = path.join(__dirname, 'dist'); // <-- THIS PATH IS CORRECT FOR SERVER.JS
 
 try {
   if (!fs.existsSync(publicPath)) { fs.mkdirSync(publicPath, { recursive: true }); }
@@ -35,9 +36,9 @@ try {
 }
 
 const allowedOrigins = [
-  "http://localhost:5173", // Keep for local development
-  "https://note-three-psi.vercel.app", // Your old Vercel frontend (if still active)
-  "https://note-chnx.onrender.com" // <-- ADD YOUR RENDER SERVICE URL HERE (VERY IMPORTANT)
+  "http://localhost:5173",
+  "https://note-three-psi.vercel.app",
+  "https://note-chnx.onrender.com"
 ];
 
 app.use(
@@ -67,8 +68,13 @@ app.use("/api/notes", notesRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
+// --- START DEBUGGING LOGS FOR FRONTEND PATH (KEEP THESE!) ---
+console.log("Calculated frontendDistPath (for serving):", frontendDistPath);
+console.log("Does frontendDistPath exist?", fs.existsSync(frontendDistPath));
+console.log("Does index.html exist at path?", fs.existsSync(path.join(frontendDistPath, 'index.html')));
+// --- END DEBUGGING LOGS FOR FRONTEND PATH ---
+
 // Serve frontend static files
-// This must come AFTER API routes.
 app.use(express.static(frontendDistPath));
 
 // Fallback for SPA routing: For any other GET request, send index.html
