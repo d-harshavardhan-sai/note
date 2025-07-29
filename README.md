@@ -10,7 +10,7 @@
 ### 📲 Scan to visit ThinkNote App
 <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://note-three-psi.vercel.app/&size=150x150" width="150" alt="QR Code to ThinkNote App"/>
 
-[🔗 Click here to open ThinkNote](https://note-three-psi.vercel.app/)
+[🔗 Click here to open ThinkNote](https://note-alpha-lilac.vercel.app/)
 
 ---
 
