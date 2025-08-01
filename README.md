@@ -33,7 +33,7 @@
 - ⚙️ Environment variables handled with `dotenv`  
 - 🔁 Auto-reloading backend during development with Nodemon  
 - 📦 Clean, modular backend structure focusing on maintainability  
-- 🎨 Responsive UI styled with React.js, Tailwind CSS, and DaisyUI (Aqua theme)  
+- 🎨 Responsive UI styled with React.js, Tailwind CSS, and DaisyUI   
 - 🔗 API calls managed via Axios  
 - 🚀 Backend deployed on **[Render](https://render.com/)** and frontend on **[Vercel](https://vercel.com/)**  
 
